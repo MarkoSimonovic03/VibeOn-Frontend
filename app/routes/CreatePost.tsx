@@ -38,7 +38,7 @@ export default function CreatePost() {
 
     return (
         <>
-            <div className="max-w-lg mx-auto mt-10 bg-white p-6 rounded-2xl shadow">
+            <div className="min-w-md mx-auto mt-10 bg-gray-300 p-6 rounded-2xl shadow h-fit">
                 <h2 className="text-xl font-bold mb-4 text-center">Create post</h2>
 
                 {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
@@ -48,25 +48,30 @@ export default function CreatePost() {
                     <textarea
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Opis posta..."
-                        className="w-full border rounded-lg p-3"
+                        placeholder="Post description..."
+                        className="w-full border rounded-lg p-3 bg-gray-100"
                         rows={4}
                         required
                     />
 
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleImageChange}
-                        required
-                    />
+					<label className="flex items-center justify-center bg-vibeon py-2 w-full rounded-lg text-white cursor-pointer">
+					Choose the image
+					<input
+						type="file"
+						accept="image/*"
+						onChange={handleImageChange}
+						className="hidden"
+						required
+					/>
+					</label>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 rounded-lg"
-                    >
-                        Objavi
-                    </button>
+					<button
+					type="submit"
+					className="w-full bg-blue-600 text-white py-2 rounded-lg"
+					>
+					Post
+					</button>
+
                 </form>
             </div>
         </>
