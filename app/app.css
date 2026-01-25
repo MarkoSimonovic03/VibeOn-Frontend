@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+@theme {
+  --color-vibeon: #40636B;
+  --color-vibeon-hover: #2F4D54;
+}
