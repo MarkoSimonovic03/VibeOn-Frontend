@@ -3,6 +3,7 @@ import Posts from "~/components/Posts";
 import { useProfile } from "~/hooks/useProfile";
 import { usePosts } from "~/hooks/usePosts";
 import { toggleFollow as toggleFollowApi } from "~/api/follow.api";
+import ButtonVibeon from "~/components/ButtonVibeon";
 
 
 export interface UserProfileDto {
@@ -65,11 +66,11 @@ export default function Profile() {
 
                 {localStorage.getItem('username') !== profile.username ? (
                     <div className="flex gap-2 mt-2">
-                        <NavLink to={`/chat/${profile.username}`} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Message</NavLink>
-                        <button onClick={handleToggleFollow} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">{profile.isFollowing ? "Unfollow" : "Follow"}</button>
+                        <NavLink to={`/chat/${profile.username}`} className="bg-vibeon hover:bg-vibeon-hover mouse-pointer py-2 px-4 text-white font-bold text-md rounded-xl">Message</NavLink>
+                        <ButtonVibeon onClick={handleToggleFollow} name={profile.isFollowing ? "Unfollow" : "Follow"} />
                     </div>
                 ) : (
-                    <button onClick={handleLogout} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl" >Logout </button>
+                    <ButtonVibeon name="Logout" onClick={handleLogout} />
                 )}
             </div>
 

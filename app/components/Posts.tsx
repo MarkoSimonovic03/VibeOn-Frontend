@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { deletePost, updatePost } from "~/api/posts.api";
+import ButtonVibeon from "./ButtonVibeon";
 
 export interface SinglePostDto {
   id: number;
@@ -79,15 +80,15 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
               <div className="flex items-center gap-2 h-full">
                 {(editingPostId === post.id) && (
                   <>
-                    <button onClick={() => handleSave(post.id)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Save</button>
-                    <button onClick={() => setEditingPostId(null)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Cancel</button>
+                    <ButtonVibeon onClick={() => handleSave(post.id)} name={"Save"} />
+                    <ButtonVibeon onClick={() => setEditingPostId(null)} name={"Cancel"} />
                   </>
                 )}
 
                 {post.username === loggedUsername && editingPostId !== post.id && (
                   <>
-                    <button onClick={() => handleEdit(post)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Edit</button>
-                    <button onClick={() => handleDelete(post.id)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Delete</button>
+                    <ButtonVibeon onClick={() => handleEdit(post)} name={"Edit"} />
+                    <ButtonVibeon onClick={() => handleDelete(post.id)} name={"Delete"} />
                   </>
                 )}
               </div>
