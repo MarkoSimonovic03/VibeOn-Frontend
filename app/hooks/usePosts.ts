@@ -1,16 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
+import { getPosts, type SinglePostDto } from "~/api/posts.api";
 
-export interface SinglePostDto {
-  id: number;
-  imageUrl: string;
-  createdAt: string;
-  description: string;
-  userId: number;
-  username: string;
-  profileImageUrl: string | null;
-}
-
-export function usePosts(url: string) {
+export function usePosts(path: string) {
   const [posts, setPosts] = useState<SinglePostDto[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -21,37 +12,27 @@ export function usePosts(url: string) {
       setError("");
 
       try {
-        const res = await fetch(url, {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
-
-        if (!res.ok) {
-          const message = await res.text();
-          throw { status: res.status, message: message || "Failed to fetch posts" };
-        }
-
-        setPosts(await res.json());
+        const data = await getPosts(path);
+        setPosts(data);
       } catch (err: any) {
         console.error(err);
-
-        const status = err?.status;
-        const message =
-          err?.message || "Failed to load posts (network or server error).";
-
-        setError(status ? `(${status}) ${message}` : message);
-      }
-      finally {
+        setError(
+          `Error (${err?.status ?? "?"}): ${
+            err?.message ?? "Failed to load posts"
+          }`
+        );
+      } finally {
         setLoading(false);
       }
     };
 
     fetchPosts();
-  }, [url]);
+  }, [path]);
 
   const updatePost = useCallback((updated: SinglePostDto) => {
-    setPosts((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+    setPosts((prev) =>
+      prev.map((p) => (p.id === updated.id ? updated : p))
+    );
   }, []);
 
   const deletePost = useCallback((id: number) => {

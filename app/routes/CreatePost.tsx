@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { useNavigate } from "react-router";
 import { createPost } from "~/api/posts.api";
 
 export default function CreatePost() {
     const [description, setDescription] = useState("");
     const [image, setImage] = useState<File | null>(null);
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
+
+     const navigate = useNavigate();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -16,8 +18,7 @@ export default function CreatePost() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
-        setSuccess("");
-
+        
         if (!image) {
             setError("Image is required");
             return;
@@ -29,9 +30,9 @@ export default function CreatePost() {
 
             setDescription("");
             setImage(null);
-            setSuccess("Post successfully created!");
+            navigate("/");
         } catch (err: any) {
-            setError(err?.message || "Failed to create post");
+            setError(`Error (${err?.status ?? "?"}): ${err?.message ?? "Request failed"}`);
         }
     };
 
@@ -42,7 +43,6 @@ export default function CreatePost() {
                 <h2 className="text-xl font-bold mb-4 text-center">Create post</h2>
 
                 {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
-                {success && <p className="text-green-600 text-sm mb-3">{success}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <textarea

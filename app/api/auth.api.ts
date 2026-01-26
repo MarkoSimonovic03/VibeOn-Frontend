@@ -1,23 +1,12 @@
-export async function login(username: string,password: string): Promise<{ accessToken: string }> {
-  const res = await fetch("http://localhost:8080/api/auth/login", {
+import { apiFetch } from "~/api/apiFetch";
+
+export async function login(username: string, password: string): Promise<{ accessToken: string }> {
+  return apiFetch("/api/auth/login", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password }),
   });
-
-  if (!res.ok) {
-    const message = await res.text();
-    throw {
-      status: res.status,
-      message: message || "Invalid username or password.",
-    };
-  }
-
-  return res.json();
 }
-
 
 export type RegisterDto = {
   username: string;
@@ -31,20 +20,17 @@ export type RegisterDto = {
 
 export async function registerUser(registerDto: RegisterDto, image?: File | null): Promise<void> {
   const formData = new FormData();
-
   if (image) formData.append("image", image);
 
-  formData.append("registerDto",new Blob([JSON.stringify(registerDto)], { type: "application/json" }));
+  formData.append(
+    "registerDto",
+    new Blob([JSON.stringify(registerDto)], { type: "application/json" })
+  );
 
-  const res = await fetch("http://localhost:8080/api/auth/register", {
+  return apiFetch("/api/auth/register", {
     method: "POST",
     body: formData,
   });
-
-  if (!res.ok) {
-    const message = await res.text();
-    throw { status: res.status, message: message || "Registration failed." };
-  }
 }
 
 
@@ -54,19 +40,23 @@ export interface HeaderUserDto {
 }
 
 export async function fetchHeaderInfo(): Promise<HeaderUserDto> {
-  const res = await fetch("http://localhost:8080/api/auth/header-info", {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  return apiFetch("/api/auth/header-info");
+}
 
-  if (!res.ok) {
-    const message = await res.text();
-    throw {
-      status: res.status,
-      message: message || "Failed to fetch header info",
-    };
-  }
 
-  return res.json();
+export type UserProfileDto = {
+  id: number;
+  username: string;
+  name: string;
+  lastName: string;
+  createdAt: string;
+  email: string;
+  profileImageUrl: string;
+  birthDate: string;
+  gender: boolean;
+  isFollowing: boolean;
+};
+
+export function getProfileInfo(username: string): Promise<UserProfileDto> {
+  return apiFetch<UserProfileDto>(`/api/auth/user/${username}`);
 }

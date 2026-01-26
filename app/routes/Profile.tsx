@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, NavLink } from "react-router-dom";
 import Posts from "~/components/Posts";
 import { useProfile } from "~/hooks/useProfile";
 import { usePosts } from "~/hooks/usePosts";
@@ -22,7 +22,7 @@ export interface UserProfileDto {
 export default function Profile() {
     const { username } = useParams();
     const { profile, loading: profileLoading, error: profileError, toggleFollow: toggleFollowLocal } = useProfile(username);
-    const { posts, loading: postsLoading, error: postsError, updatePost, deletePost } = usePosts(`http://localhost:8080/api/posts/user/${username}`);
+    const { posts, loading: postsLoading, error: postsError, updatePost, deletePost } = usePosts(`/api/posts/user/${username}`);
 
     const navigate = useNavigate();
 
@@ -41,12 +41,7 @@ export default function Profile() {
         } catch (err: any) {
             toggleFollowLocal();
             console.error(err);
-
-            const status = err?.status;
-            const message =
-                err?.message || "Failed to toggle follow (network or server error).";
-
-            alert(status ? `(${status}) ${message}` : message);
+            alert(`Error (${err?.status ?? "?"}): ${err?.message ?? "Request failed"}`);
         }
     };
 
@@ -70,7 +65,7 @@ export default function Profile() {
 
                 {localStorage.getItem('username') !== profile.username ? (
                     <div className="flex gap-2 mt-2">
-                        <a href={`/chat/${profile.username}`} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Message</a>
+                        <NavLink to={`/chat/${profile.username}`} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Message</NavLink>
                         <button onClick={handleToggleFollow} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">{profile.isFollowing ? "Unfollow" : "Follow"}</button>
                     </div>
                 ) : (

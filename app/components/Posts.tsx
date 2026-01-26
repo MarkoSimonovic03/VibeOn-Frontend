@@ -21,7 +21,7 @@ interface PostsProps {
 }
 
 export default function Posts({ posts, loading, error, onPostUpdated, onPostDeleted }: PostsProps) {
- const loggedUsername = typeof window !== "undefined" ? localStorage.getItem("username") : null;
+  const loggedUsername = typeof window !== "undefined" ? localStorage.getItem("username") : null;
   const [editingPostId, setEditingPostId] = useState<number | null>(null);
   const [editedDescription, setEditedDescription] = useState<string>("");
 
@@ -38,29 +38,19 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
       setEditedDescription("");
     } catch (err: any) {
       console.error(err);
-
-      const status = err?.status;
-      const message =
-        err?.message || "Failed to update post (network or server error).";
-
-      alert(status ? `(${status}) ${message}` : message);
+      alert(`Error (${err?.status ?? "?"}): ${err?.message ?? "Request failed"}`);
     }
   };
 
   const handleDelete = async (postId: number) => {
-    if (!confirm("Da li ste sigurni da želite da obrišete post?")) return;
+    if (!confirm("Are you sure you want to delete the post?")) return;
 
     try {
       await deletePost(postId);
       onPostDeleted?.(postId);
     } catch (err: any) {
       console.error(err);
-
-      const status = err?.status;
-      const message =
-        err?.message || "Failed to delete post (network or server error).";
-
-      alert(status ? `(${status}) ${message}` : message);
+      alert(`Error (${err?.status ?? "?"}): ${err?.message ?? "Request failed"}`);
     }
   };
 
@@ -97,7 +87,7 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
                 {post.username === loggedUsername && editingPostId !== post.id && (
                   <>
                     <button onClick={() => handleEdit(post)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Edit</button>
-                    <button  onClick={() => handleDelete(post.id)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Delete</button>
+                    <button onClick={() => handleDelete(post.id)} className="bg-vibeon py-2 px-4 text-white font-bold text-md rounded-xl">Delete</button>
                   </>
                 )}
               </div>
@@ -108,7 +98,7 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
 
           <div className="p-4">
             {editingPostId === post.id ? (
-                <input type="text" className="w-full bg-white border border rounded p-2" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
+              <input type="text" className="w-full bg-white border border rounded p-2" value={editedDescription} onChange={(e) => setEditedDescription(e.target.value)} />
             ) : (
               <p className="text-gray-800">{post.description}</p>
             )}

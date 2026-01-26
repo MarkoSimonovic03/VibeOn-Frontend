@@ -16,21 +16,21 @@ export default function Login() {
   const [error, setError] = useState<string>("");
   const navigate = useNavigate();
 
-const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  setError("");
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
 
-  try {
-    const data = await login(username, password);
+    try {
+      const data = await login(username, password);
 
-    localStorage.setItem("token", data.accessToken);
-    localStorage.setItem("username", username);
+      localStorage.setItem("token", data.accessToken);
+      localStorage.setItem("username", username);
 
-    navigate("/");
-  } catch (err: any) {
-    setError(err?.message || "An unexpected error occurred.");
-  }
-};
+      navigate("/");
+    } catch (err: any) {
+      setError(err?.message ?? "Invalid username or password.");
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center bg-gray-300 rounded-xl px-16 py-8 shadow-2xl">

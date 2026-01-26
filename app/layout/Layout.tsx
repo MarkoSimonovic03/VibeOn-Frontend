@@ -9,14 +9,19 @@ export default function Layout() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    const clearAuth = () => {
+      if (typeof window === "undefined") return;
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+    };
+
     const loadHeaderInfo = async () => {
       try {
         const data = await fetchHeaderInfo();
         setUser(data);
-      } catch (err) {
+      } catch (err: any) {
         console.error(err);
-        localStorage.removeItem("token");
-        localStorage.removeItem("username");
+        clearAuth();
         navigate("/login");
       }
     };
@@ -26,7 +31,7 @@ export default function Layout() {
 
   return (
     <>
-      <Header isLoggedIn={true} user={user} />
+      <Header isLoggedIn={!!user} user={user} />
       <div className="pt-24 flex h-screen">
         <Outlet />
       </div>

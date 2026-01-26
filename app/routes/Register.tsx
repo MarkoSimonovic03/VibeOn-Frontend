@@ -35,29 +35,29 @@ export default function Register() {
     setError("");
 
     try {
-      await registerUser({username,name,lastName: lastname,email,password,birthDate: formatDateToYYYYMMDD(birthdate),gender: gender === "1",},profilePicture);
+      await registerUser({ username, name, lastName: lastname, email, password, birthDate: formatDateToYYYYMMDD(birthdate), gender: gender === "1", }, profilePicture);
 
       navigate("/login");
     } catch (err: any) {
-      setError(err?.message || "An unexpected error occurred.");
+      setError(err?.message ?? "Registration failed.");
     }
   };
 
   return (
-      <form onSubmit={handleSubmit} className="flex flex-col items-center bg-gray-300 rounded-xl px-16 p-8 shadow-2xl">
-        <AuthInput onChange={setUsername} placeholder="Username" type="text" />
-        <AuthInput onChange={setPassword} placeholder="Password" type="password" />
-        <AuthInput onChange={setName} placeholder="Name" type="text" />
-        <AuthInput onChange={setLastname} placeholder="Lastname" type="text" />
-        <AuthInput onChange={setEmail} placeholder="Email" type="text" />
-        <AuthInput onChange={setBirthdate} placeholder="Birthdate" type="date" />
+    <form onSubmit={handleSubmit} className="flex flex-col items-center bg-gray-300 rounded-xl px-16 p-8 shadow-2xl">
+      <AuthInput onChange={setUsername} placeholder="Username" type="text" />
+      <AuthInput onChange={setPassword} placeholder="Password" type="password" />
+      <AuthInput onChange={setName} placeholder="Name" type="text" />
+      <AuthInput onChange={setLastname} placeholder="Lastname" type="text" />
+      <AuthInput onChange={setEmail} placeholder="Email" type="text" />
+      <AuthInput onChange={setBirthdate} placeholder="Birthdate" type="date" />
 
-        <GenderInput onChange={setGender} />
-        <FileInput onChange={setProfilePicture} />
+      <GenderInput onChange={setGender} />
+      <FileInput onChange={setProfilePicture} />
 
-        {error && (<p className="text-red-500 text-sm mb-4 text-center"> {error} </p>)}
+      {error && (<p className="text-red-500 text-sm mb-4 text-center"> {error} </p>)}
 
-        <AuthButton label="Register" />
-      </form>
+      <AuthButton label="Register" />
+    </form>
   );
 }
