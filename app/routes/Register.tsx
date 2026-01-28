@@ -55,8 +55,6 @@ export default function Register() {
       <GenderInput onChange={setGender} />
       <FileInput onChange={setProfilePicture} />
 
-      {error && (<p className="text-red-500 text-sm mb-4 text-center"> {error} </p>)}
-
       <AuthButton label="Register" />
     </form>
   );

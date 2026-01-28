@@ -23,7 +23,7 @@ export default function OtherChatMessage({ label, imgURL, date }: Props) {
   }
 
   return (
-    <div className="flex justify-end my-2">
+    <div className="flex justify-end">
       <div className="min-w-0 flex flex-col items-end">
         <div className="inline-block max-w-sm bg-white text-black px-4 py-2 rounded-2xl rounded-br-none">
           <p className="whitespace-pre-wrap break-words">{label}</p>

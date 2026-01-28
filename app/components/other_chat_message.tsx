@@ -23,7 +23,7 @@ export default function OtherChatMessage({ label, imgURL, date }: Props) {
   }
 
   return (
-    <div className="flex items-start my-2">
+    <div className="flex items-start">
       <img
         className="w-10 h-10 mr-2 rounded-full object-cover"
         src={`http://localhost:8080/images/${imgURL}`}

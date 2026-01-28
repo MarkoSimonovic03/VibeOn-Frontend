@@ -7,5 +7,8 @@ export default defineConfig({
   plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
   define: {
     global: 'window'
+  },
+  server: {
+    host: true
   }
 });

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { deletePost, updatePost } from "~/api/posts.api";
 import ButtonVibeon from "./ButtonVibeon";
 
@@ -65,7 +65,7 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
         <div key={post.id} className="bg-gray-200 rounded-2xl shadow-lg shadow-black/40 border-2 border-gray-300">
 
           <div className="flex justify-between items-centar p-4">
-            <NavLink to={`/profile/${post.username}`} className="flex items-center gap-3">
+            <Link to={`/profile/${post.username}`} className="flex items-center gap-3">
               <img
                 src={post.profileImageUrl ? "http://localhost:8080/images/" + post.profileImageUrl : "profile.png"}
                 alt="avatar" className="w-14 h-14 rounded-full object-cover"
@@ -74,7 +74,7 @@ export default function Posts({ posts, loading, error, onPostUpdated, onPostDele
                 <p className="font-semibold text-xl">{post.username}</p>
                 <p className="text-xs text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
               </div>
-            </NavLink>
+            </Link>
 
             <div>
               <div className="flex items-center gap-2 h-full">

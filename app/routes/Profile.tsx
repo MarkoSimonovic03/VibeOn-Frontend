@@ -4,6 +4,8 @@ import { useProfile } from "~/hooks/useProfile";
 import { usePosts } from "~/hooks/usePosts";
 import { toggleFollow as toggleFollowApi } from "~/api/follow.api";
 import ButtonVibeon from "~/components/ButtonVibeon";
+import { useState } from "react";
+import PostsGreed from "~/components/PostsGreed";
 
 
 export interface UserProfileDto {
@@ -24,6 +26,7 @@ export default function Profile() {
     const { username } = useParams();
     const { profile, loading: profileLoading, error: profileError, toggleFollow: toggleFollowLocal } = useProfile(username);
     const { posts, loading: postsLoading, error: postsError, updatePost, deletePost } = usePosts(`/api/posts/user/${username}`);
+    const [activeView, setActiveView] = useState<"grid" | "feed">("grid");
 
     const navigate = useNavigate();
 
@@ -74,7 +77,33 @@ export default function Profile() {
                 )}
             </div>
 
-            <Posts posts={posts} loading={postsLoading} error={postsError} onPostUpdated={updatePost} onPostDeleted={deletePost} />
+
+            <div className="flex gap-6 mb-6 border-b">
+                <button
+                    onClick={() => setActiveView("grid")}
+                    className={`pb-2 text-2xl font-semibold ${activeView === "grid"
+                        ? "border-b-2 border-black"
+                        : "text-gray-400"
+                        }`}
+                >
+                    Grid
+                </button>
+
+                <button
+                    onClick={() => setActiveView("feed")}
+                    className={`pb-2 text-2xl font-semibold ${activeView === "feed"
+                        ? "border-b-2 border-black"
+                        : "text-gray-400"
+                        }`}
+                >
+                    List
+                </button>
+            </div>
+
+            {activeView === "grid" && (<PostsGreed posts={posts} loading={postsLoading} error={postsError} />)}
+
+            {activeView === "feed" && (<Posts posts={posts} loading={postsLoading} error={postsError} />)}
+            {/* <Posts posts={posts} loading={postsLoading} error={postsError} onPostUpdated={updatePost} onPostDeleted={deletePost} /> */}
         </div >
     );
 }

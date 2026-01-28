@@ -1,11 +1,12 @@
 // src/pages/ChatPage.tsx
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import SockJS from "sockjs-client";
 import { Client } from "@stomp/stompjs";
 import OtherChatMessage from "~/components/other_chat_message";
 import MeChatMessage from "~/components/me_chat_message";
+import ButtonVibeon from "~/components/ButtonVibeon";
 
 type MessageDto = {
   id: number;
@@ -72,7 +73,7 @@ export default function ChatPage() {
       webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
       connectHeaders: { Authorization: `Bearer ${token}` },
       reconnectDelay: 5000,
-      debug: () => {},
+      debug: () => { },
     });
 
     client.onConnect = () => {
@@ -156,42 +157,25 @@ export default function ChatPage() {
   return (
     <div className="flex flex-col flex-1 bg-gray-200 justify-center max-w-2xl mx-auto">
       <header className="flex items-center bg-gray-300 px-5 py-2 w-full gap-3">
-        <NavLink to={"/chats"}>
+        <Link to={"/chats"}>
           <img className="w-8 h-8" src="../../arrow-back-05.svg" />
-        </NavLink>
+        </Link>
 
-        <NavLink
-          to={`../profile/${chat.otherUsername}`}
-          className="flex items-center gap-3"
-        >
-          <img
-            className="w-13 h-13 object-cover rounded-full"
-            src={`http://localhost:8080/images/${chat.otherProfileImageUrl}`}
-          />
+        <Link to={`../profile/${chat.otherUsername}`} className="flex items-center gap-3"  >
+          <img className="w-13 h-13 object-cover rounded-full" src={`http://localhost:8080/images/${chat.otherProfileImageUrl}`} />
           <p className="text-2xl font-bold">{chat.otherUsername}</p>
-        </NavLink>
+        </Link>
       </header>
 
-      <div className="w-full flex-1 overflow-y-auto overflow-x-hidden px-3">
+      <div className="w-full flex-1 overflow-y-auto overflow-x-hidden p-3 space-y-2">
         {messages.map((msg) =>
           msg.username === chat.username ? (
-            <MeChatMessage
-              key={msg.id}
-              label={msg.content}
-              imgURL={chat.profileImageUrl}
-			  date={msg.createdAt}
-            />
+            <MeChatMessage key={msg.id} label={msg.content} imgURL={chat.profileImageUrl} date={msg.createdAt} />
           ) : (
-            <OtherChatMessage
-              key={msg.id}
-              label={msg.content}
-              imgURL={chat.otherProfileImageUrl}
-			  date={msg.createdAt}
-            />
+            <OtherChatMessage key={msg.id} label={msg.content} imgURL={chat.otherProfileImageUrl} date={msg.createdAt} />
           ),
         )}
 
-        {/* OVO MORA da postoji da scrollIntoView radi */}
         <div ref={messagesEndRef} />
       </div>
 
@@ -203,13 +187,9 @@ export default function ChatPage() {
           onChange={(e) => setNewMessage(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           placeholder="Type a message..."
+          maxLength={255}
         />
-        <button
-          className="bg-vibeon text-white px-4 py-2 rounded-lg"
-          onClick={sendMessage}
-        >
-          Send
-        </button>
+        <ButtonVibeon onClick={sendMessage} name="Send" />
       </footer>
     </div>
   );

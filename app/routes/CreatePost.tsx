@@ -7,7 +7,7 @@ export default function CreatePost() {
     const [image, setImage] = useState<File | null>(null);
     const [error, setError] = useState("");
 
-     const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
@@ -18,7 +18,7 @@ export default function CreatePost() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setError("");
-        
+
         if (!image) {
             setError("Image is required");
             return;
@@ -45,33 +45,15 @@ export default function CreatePost() {
                 {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <textarea
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        placeholder="Post description..."
-                        className="w-full border rounded-lg p-3 bg-gray-100"
-                        rows={4}
-                        required
-                    />
+                    <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Post description..."
+                        className="w-full border rounded-lg p-3 bg-gray-100" rows={4} required />
 
-					<label className="flex items-center justify-center bg-vibeon py-2 w-full rounded-lg text-white cursor-pointer">
-					Choose the image
-					<input
-						type="file"
-						accept="image/*"
-						onChange={handleImageChange}
-						className="hidden"
-						required
-					/>
-					</label>
+                    <label className="flex items-center justify-center bg-vibeon py-2 w-full rounded-lg text-white cursor-pointer">
+                        Choose the image
+                        <input type="file" accept="image/*" onChange={handleImageChange} className="hidden" required />
+                    </label>
 
-					<button
-					type="submit"
-					className="w-full bg-blue-600 text-white py-2 rounded-lg"
-					>
-					Post
-					</button>
-
+                    <button type="submit" className="w-full bg-blue-600 text-white py-2 rounded-lg" > Post </button>
                 </form>
             </div>
         </>

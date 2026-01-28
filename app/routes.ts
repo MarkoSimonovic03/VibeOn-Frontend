@@ -6,7 +6,6 @@ export default [
     route("friends", "routes/Friends.tsx"),
     route("create", "routes/CreatePost.tsx"),
     route("profile/:username", "routes/Profile.tsx"),
-    route("chat-test", "routes/ChatTestPage.tsx"),
     route("chats", "routes/ChatsPage.tsx"),
     route("chat/:username", "routes/ChatPage.tsx"),
     route("*", "routes/RedirectToHome.tsx")
