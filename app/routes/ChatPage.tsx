@@ -7,6 +7,7 @@ import { Client } from "@stomp/stompjs";
 import OtherChatMessage from "~/components/other_chat_message";
 import MeChatMessage from "~/components/me_chat_message";
 import ButtonVibeon from "~/components/ButtonVibeon";
+import { API_BASE_URL } from "src/config/api";
 
 type MessageDto = {
   id: number;
@@ -47,7 +48,7 @@ export default function ChatPage() {
     if (!username || !token) return;
 
     axios
-      .get<ChatDto>(`http://localhost:8080/api/chats/${username}`, {
+      .get<ChatDto>(`${API_BASE_URL}/api/chats/${username}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => {
@@ -70,7 +71,7 @@ export default function ChatPage() {
     if (!token) return;
 
     const client = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8080/ws"),
+      webSocketFactory: () => new SockJS(`${API_BASE_URL}/ws`),
       connectHeaders: { Authorization: `Bearer ${token}` },
       reconnectDelay: 5000,
       debug: () => { },
